@@ -1,0 +1,22 @@
+trigger:
+    tags:
+        include: ['*']
+pr: none
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: AzureMLExtensionEngineering
+      ref: main
+
+extends:
+    template: azure-pipelines/extension/stable.yml@templates
+    parameters:
+        subfolder: azureml-language-server
+        buildSteps:
+            - script: npm ci
+              workingDirectory: azureml-language-server
+
+            - script: npm run vscode:prepublish
+              displayName: Compile

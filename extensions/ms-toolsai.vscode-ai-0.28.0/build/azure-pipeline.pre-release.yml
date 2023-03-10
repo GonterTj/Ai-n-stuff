@@ -1,0 +1,39 @@
+# Run on a schedule
+trigger: none
+pr: none
+
+schedules:
+  - cron: "0 9 * * Mon-Fri" # 9am UTC, Monday-Friday (2am PDT, after VS Code pre-release builds which is 11pm PDT)
+    displayName: Nightly Release Schedule
+    always: true
+    branches:
+      include:
+        - main
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: AzureMLExtensionEngineering
+      ref: main
+
+extends:
+  template: azure-pipelines/extension/pre-release.yml@templates
+  parameters:
+    subfolder: azureml-language-server
+    buildSteps:
+      - script: npm ci
+        workingDirectory: azureml-language-server
+
+      - script: npm run vscode:prepublish
+        displayName: Compile
+
+      - script: >
+          node ./build/prepare-nightly-build.js -v "$VERSION"
+
+        displayName: Generate package.json
+
+      - script: |
+          mv ./package.json ./package.json.bak
+          mv ./package.insiders.json ./package.json
+        displayName: Override package.json for insiders
