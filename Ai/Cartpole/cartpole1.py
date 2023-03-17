@@ -24,7 +24,7 @@ model = PPO('MlpPolicy', env, verbose=1)
 
 model.learn(total_timesteps=20000)
 
-model.save('ppo model')
+#model.save('ppo model')
 
 evaluate_policy(model, env, n_eval_episodes=10, render=True)
 

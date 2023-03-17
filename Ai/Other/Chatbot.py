@@ -23,6 +23,8 @@ while (user != "bye"):
         keywords.append(new_keyword)
         new_response = input("How should I respond to " + new_keyword + "? ")
         responses.append(new_response)
+        
+        
 
     user = input("Say something (or type bye to quit): ")
     user = user.lower()
