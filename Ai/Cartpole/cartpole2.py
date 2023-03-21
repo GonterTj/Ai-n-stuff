@@ -2,7 +2,7 @@
 from stable_baselines3 import PPO
 import gym
 
-env = gym.make("CartPole-v1")
+env = gym.make("LunarLander-v2")
 model = PPO(policy = "MlpPolicy",env =  env, verbose=1)
 model.learn(total_timesteps=25000)
 
